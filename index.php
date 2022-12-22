@@ -39,10 +39,12 @@ if($op == 'delete'){
 }
 if ($op == 'edit') {
     $id         = $_GET['id'];
+    echo $id;
     $sql1       = "select * from mahasiswa where id = '$id'";
     $q1         = mysqli_query($koneksi, $sql1);
-    $var_dump         = mysqli_fetch_array($q1);
+    $var_dump         = mysqli_fetch($q1);
     print_r($var_dump);
+    die();
     $id                  = NULL;
     $nama_depan          = $var_dump ['nama_depan'];
     $nama_belakang       = $var_dump ['nama_belakang'];
@@ -256,8 +258,9 @@ if (isset($_POST['simpan'])) { //untuk create
                         $q2     = mysqli_query($koneksi, $sql2);
                         $urut   = 1;
                         while ($r2 = mysqli_fetch_array($q2)) {
-                            // print_r($r2);
-                            // die(); 
+                             print_r($r2);
+                             die(); 
+                            $id                  = $r2['id'];
                             $nama_depan          = $r2['nama_depan'];
                             $nama_belakang       = $r2['nama_belakang'];
                             $nim                 = $r2['nim'];
@@ -282,8 +285,8 @@ if (isset($_POST['simpan'])) { //untuk create
                                 <td scope="row"><?php echo $hoby?></td>
                                 <td scope="row"><?php echo $angkatan?></td>
                                 <td scope="row">
-                                    <a href="index.php?op=edit&id=<?php echo $id ?>"><button type="button" class="btn btn-warning">Ubah</button></a>
-                                    <a href="index.php?op=delete&id=<?php echo $id?>" onclick="return confirm('Yakin mau delete data?')"><button type="button" class="btn btn-danger">Hapus</button></a>            
+                                    <a href="index.php?op=edit&id=1<?php echo $id ?>"><button type="button" class="btn btn-warning">Ubah</button></a>
+                                    <a href="index.php?op=delete&id=1<?php echo $id?>" onclick="return confirm('Yakin mau delete data?')"><button type="button" class="btn btn-danger">Hapus</button></a>            
                                 </td>
                             </tr>
                         <?php
