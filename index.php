@@ -42,7 +42,8 @@ if ($op == 'edit') {
     $sql1       = "select * from mahasiswa where id = '$id'";
     $q1         = mysqli_query($koneksi, $sql1);
     $var_dump         = mysqli_fetch_array($q1);
-    $id                  = $var_dump [NULL];
+    print_r($var_dump);
+    $id                  = NULL;
     $nama_depan          = $var_dump ['nama_depan'];
     $nama_belakang       = $var_dump ['nama_belakang'];
     $nim                 = $var_dump ['nim'];
@@ -76,7 +77,7 @@ if (isset($_POST['simpan'])) { //untuk create
 
     if ($nama_depan && $nama_belakang && $nim && $prodi && $alamat && $jenis_kelamin && $no_telepon && $email && $hoby && $angkatan) {
         if ($op == 'edit') { //untuk update
-            $sql1       = "update mahasiswa set nama_depan=$nama_depan',nama_belakang='$nama_belakang',nim = '$nim', prodi='$prodi',alamat = '$alamat',jenis_kelamin='$jenis_kelamin',no_telepon='$no_telepon',email='$email',hoby='$hoby',angkatan='$angkatan' where id = '$id'";
+            $sql1       = "update mahasiswa set nama_depan='$nama_depan',nama_belakang='$nama_belakang',nim = '$nim', prodi='$prodi',alamat = '$alamat',jenis_kelamin='$jenis_kelamin',no_telepon='$no_telepon',email='$email',hoby='$hoby',angkatan='$angkatan' where id = '$id'";
             $q1         = mysqli_query($koneksi, $sql1);
             if ($q1) {
                 $success = "Data berhasil perbarui";
@@ -84,7 +85,7 @@ if (isset($_POST['simpan'])) { //untuk create
                 $error  = "Data gagal di perbarui";
             }
         } else { //untuk insert
-            $sql1   = "insert into mahasiswa(nama_depan,nama_belakang,nim,prodi,alamat,jenis_kelamin,no_telepon,email,hoby) values ('$id','$nama_depan','$nama_belakang','$nim','$prodi','$alamat','$jenis_kelamin','$no_telepon','$email','$hoby','$angkatan')";
+            $sql1   = "insert into mahasiswa(id,nama_depan,nama_belakang,nim,prodi,alamat,jenis_kelamin,no_telepon,email,hoby,angkatan) values ('$id','$nama_depan','$nama_belakang','$nim','$prodi','$alamat','$jenis_kelamin','$no_telepon','$email','$hoby','$angkatan')";
             $q1     = mysqli_query($koneksi, $sql1);
             if ($q1) {
                 $success     = "Berhasil memasukkan data baru";
@@ -170,16 +171,16 @@ if (isset($_POST['simpan'])) { //untuk create
                         <div class="col-sm-10">
                             <select class="form-control" name="prodi" id="prodi">
                                 <option value="">- Pilih Program Studi -</option>
-                                <option value="saintek" <?php if ($prodi == "Teknik Informatika") echo "selected" ?>>Teknik Informatika</option>
-                                <option value="saintek" <?php if ($prodi == "Teknik Elektro") echo "selected" ?>>Teknik Elektro</option>
-                                <option value="saintek" <?php if ($prodi == "Teknik Kimia") echo "selected" ?>>Teknik Kimia</option>
-                                <option value="saintek" <?php if ($prodi == "Teknik Fisika") echo "selected" ?>>Teknik Fisika</option>
-                                <option value="saintek" <?php if ($prodi == "Teknik Sipil") echo "selected" ?>>Teknik Sipil</option>
-                                <option value="saintek" <?php if ($prodi == "Farmasi") echo "selected" ?>>Farmasi</option>
-                                <option value="saintek" <?php if ($prodi == "Arsitektur") echo "selected" ?>>Arsitektur</option>
-                                <option value="saintek" <?php if ($prodi == "Teknik Geologi") echo "selected" ?>>Teknik Geologi</option>
-                                <option value="saintek" <?php if ($prodi == "Teknik Geomatika") echo "selected" ?>>Teknik Geomatika</option>
-                                <option value="saintek" <?php if ($prodi == "Teknik Perkeretaapian") echo "selected" ?>>Teknik Perkeretaapian</option>  
+                                <option value="Teknik Informatika" <?php if ($prodi == "Teknik Informatika") echo "selected" ?>>Teknik Informatika</option>
+                                <option value="Teknik Elektro" <?php if ($prodi == "Teknik Elektro") echo "selected" ?>>Teknik Elektro</option>
+                                <option value="Teknik Kimia" <?php if ($prodi == "Teknik Kimia") echo "selected" ?>>Teknik Kimia</option>
+                                <option value="Teknik Fisika" <?php if ($prodi == "Teknik Fisika") echo "selected" ?>>Teknik Fisika</option>
+                                <option value="Teknik Sipil" <?php if ($prodi == "Teknik Sipil") echo "selected" ?>>Teknik Sipil</option>
+                                <option value="Farmasi" <?php if ($prodi == "Farmasi") echo "selected" ?>>Farmasi</option>
+                                <option value="Arsitektur" <?php if ($prodi == "Arsitektur") echo "selected" ?>>Arsitektur</option>
+                                <option value="Teknik Geologi" <?php if ($prodi == "Teknik Geologi") echo "selected" ?>>Teknik Geologi</option>
+                                <option value="Teknik Geomatika" <?php if ($prodi == "Teknik Geomatika") echo "selected" ?>>Teknik Geomatika</option>
+                                <option value="Teknik Perkeretaapian" <?php if ($prodi == "Teknik Perkeretaapian") echo "selected" ?>>Teknik Perkeretaapian</option>  
                             </select>
                         </div>
                     </div>
@@ -245,6 +246,7 @@ if (isset($_POST['simpan'])) { //untuk create
                             <th scope="col">No Telepon</th>
                             <th scope="col">Email</th>
                             <th scope="col">Hoby</th>
+                            <th scope="col">Angkatan</th>
                             <th scope="col">Aksi</th>
                         </tr>
                     </thead>
@@ -254,13 +256,15 @@ if (isset($_POST['simpan'])) { //untuk create
                         $q2     = mysqli_query($koneksi, $sql2);
                         $urut   = 1;
                         while ($r2 = mysqli_fetch_array($q2)) {
-                            $nama_depan          = $r2['nama depan'];
-                            $nama_belakang       = $r2['nama belakang'];
+                            // print_r($r2);
+                            // die(); 
+                            $nama_depan          = $r2['nama_depan'];
+                            $nama_belakang       = $r2['nama_belakang'];
                             $nim                 = $r2['nim'];
                             $prodi               = $r2['prodi'];
                             $alamat              = $r2['alamat'];
-                            $jenis_kelamin       = $r2['jenis kelamin'];
-                            $no_telepon          = $r2['no telepon'];
+                            $jenis_kelamin       = $r2['jenis_kelamin'];
+                            $no_telepon          = $r2['no_telepon'];
                             $email               = $r2['email'];
                             $hoby                = $r2['hoby'];
                             $angkatan            = $r2['angkatan'];
