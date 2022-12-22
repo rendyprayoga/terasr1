@@ -40,9 +40,9 @@ if($op == 'delete'){
 if ($op == 'edit') {
     $id         = $_GET['id'];
     echo $id;
-    $sql1       = "select * from mahasiswa where id = '$id'";
+    $sql1       = "select * from mahasiswa where id = $id";
     $q1         = mysqli_query($koneksi, $sql1);
-    $var_dump         = mysqli_fetch($q1);
+    $var_dump   = mysqli_fetch_row($q1);
     print_r($var_dump);
     die();
     $id                  = NULL;
@@ -258,8 +258,8 @@ if (isset($_POST['simpan'])) { //untuk create
                         $q2     = mysqli_query($koneksi, $sql2);
                         $urut   = 1;
                         while ($r2 = mysqli_fetch_array($q2)) {
-                             print_r($r2);
-                             die(); 
+                            //  print_r($r2);
+                            //  die(); 
                             $id                  = $r2['id'];
                             $nama_depan          = $r2['nama_depan'];
                             $nama_belakang       = $r2['nama_belakang'];
